@@ -1,11 +1,11 @@
 import { TipoTermo } from '../data/TiposLocais'
 
-function descrever(termo: TipoTermo) {
-  if(termo.tipo === 'classe') {
+function descreverTermo(termo: TipoTermo) {
+  if(termo.tipo === 'classe' && termo.descricao !== undefined) {
     return `A classe ${termo.nome} é ${termo.descricao}`
-  } else if (termo.tipo === 'atributo') {
+  } else if (termo.tipo === 'atributo' && termo.descricao !== undefined) {
     return `O atributo ${termo.nome} é usado para ${termo.descricao}`
-  } else return `Descrição não encontrada`
+  } else return `Descrição não encontrada.`
 }
 
-export { descrever }
+export { descreverTermo }
