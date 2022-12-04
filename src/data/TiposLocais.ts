@@ -1,8 +1,12 @@
 // Ficha de Termo
-export interface TipoTermo {
+export type TipoTermo = {
   tipo: string;
   descricao?: string;
   nome: string;
+}
+
+export type TermoClasse = TipoTermo & {
+  atributo: Array<number>;
 }
 
 // Ficha de Personagem
