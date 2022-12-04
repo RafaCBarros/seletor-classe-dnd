@@ -4,7 +4,7 @@ import { PersonagemForm } from './components/FormsPersonagem';
 import { TipoTermo } from './data/TiposLocais';
 import { descreverTermo } from './utils/descritores';
 import { classes } from './data/Termos'
-import { verificarClasse } from './utils/verificadores';
+import { listarRecomendacao } from './utils/verificadores';
 
 type FormData = {
   forca: number,
@@ -38,18 +38,31 @@ function App() {
   // Dados do formulário gravados
   const camposAtributos = <PersonagemForm {...data} atualizarCampos={atualizarCampos} />;
   
+  let listaRecomendacoes: String[] = []
   // qual o resultado de Verificar Classe, o termo
-  let classeSelecionada: TipoTermo = { tipo:'', descricao: '', nome: ''}
+  let classesRecomendadas: Array<TipoTermo> = []
   const [descricao, setDescricao] = useState(`Teste o seletor de classes`)
   const [classe, setClasse] = useState('')
+  const [classeXtra, setClassesExtra] = useState('')
   function selecionarClasse(e: FormEvent) {
     e.preventDefault()
-
-    classeSelecionada = classes[verificarClasse(data)];
+    listaRecomendacoes = listarRecomendacao(data) // resultado NOME  das classes 
     
-    setClasse(classeSelecionada.nome)
-    setDescricao(descreverTermo(classeSelecionada));
-    console.log(descricao)
+    for (let i = 0; i < listaRecomendacoes.length; i++) {
+      for (let j = 0; j < classes.length; j++) {
+        if (listaRecomendacoes[i] === classes[j].nome) {
+          classesRecomendadas.push(classes[j])
+        }
+      }
+    }
+    
+    // classeSelecionada = classes[listarRecomendaca(data)];
+    
+    setClasse(classesRecomendadas[0].nome)
+    setDescricao(descreverTermo(classesRecomendadas[0]));
+    if(classesRecomendadas[1]){
+      setClassesExtra(`Recomendações adicionais: ` + listaRecomendacoes.slice(1).join(', ')) //
+    }
   }
   
   // renderização da tela
@@ -108,6 +121,9 @@ function App() {
           <h2>{classe}</h2>
           <p >
             {descricao}
+          </p>
+          <p>
+            {classeXtra}
           </p>
         </div>
       </div>
