@@ -3,7 +3,7 @@ import './App.css';
 import { PersonagemForm } from './components/FormsPersonagem';
 import { TipoTermo } from './data/TiposLocais';
 import { descreverTermo } from './utils/descritores';
-import { classes } from './data/Termos'
+import { classes as db_classes } from './data/Termos'
 import { listarRecomendacao } from './utils/verificadores';
 
 type FormData = {
@@ -38,30 +38,34 @@ function App() {
   // Dados do formulário gravados
   const camposAtributos = <PersonagemForm {...data} atualizarCampos={atualizarCampos} />;
   
-  let listaRecomendacoes: String[] = []
-  // qual o resultado de Verificar Classe, o termo
-  let classesRecomendadas: Array<TipoTermo> = []
-  const [descricao, setDescricao] = useState(`Teste o seletor de classes`)
-  const [classe, setClasse] = useState('')
-  const [classeXtra, setClassesExtra] = useState('')
+  let listaNomesRecomendados: String[] = []
+  let listaClassesRecomendadas: Array<TipoTermo> = []
+  
+  // Valores para renderização dinâmica da tela
+  const [descricaoClasse, setDescricao] = useState(`Teste o seletor de classes`)
+  const [nomeClasseRecomendada, setClasse] = useState('')
+  const [nomeClassesExtras, setClassesExtra] = useState('')
+
   function selecionarClasse(e: FormEvent) {
     e.preventDefault()
-    listaRecomendacoes = listarRecomendacao(data) // resultado NOME  das classes 
+    listaNomesRecomendados = listarRecomendacao(data) // resultado NOME  das classes 
     
-    for (let i = 0; i < listaRecomendacoes.length; i++) {
-      for (let j = 0; j < classes.length; j++) {
-        if (listaRecomendacoes[i] === classes[j].nome) {
-          classesRecomendadas.push(classes[j])
+    for (let i = 0; i < listaNomesRecomendados.length; i++) {
+      for (let j = 0; j < db_classes.length; j++) {
+        if (listaNomesRecomendados[i] === db_classes[j].nome) {
+          listaClassesRecomendadas.push(db_classes[j])
         }
       }
     }
     
     // classeSelecionada = classes[listarRecomendaca(data)];
     
-    setClasse(classesRecomendadas[0].nome)
-    setDescricao(descreverTermo(classesRecomendadas[0]));
-    if(classesRecomendadas[1]){
-      setClassesExtra(`Recomendações adicionais: ` + listaRecomendacoes.slice(1).join(', ')) //
+    setClasse(listaClassesRecomendadas[0].nome)
+    setDescricao(descreverTermo(listaClassesRecomendadas[0]));
+    if(listaClassesRecomendadas[1]){
+      setClassesExtra(`Recomendações adicionais: ` + listaNomesRecomendados.slice(1).join(', ')) //
+    } else {
+      setClassesExtra('') //
     }
   }
   
@@ -118,12 +122,12 @@ function App() {
         </div>
         <div style={{ textAlign: "left", textIndent: "5rem", color: 'lightblue', margin: '3rem 0'}}>
 
-          <h2>{classe}</h2>
+          <h2>{nomeClasseRecomendada}</h2>
           <p >
-            {descricao}
+            {descricaoClasse}
           </p>
           <p>
-            {classeXtra}
+            {nomeClassesExtras}
           </p>
         </div>
       </div>

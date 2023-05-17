@@ -7,9 +7,9 @@ import {classes as listaClasse} from '../data/Termos'
 /* 
 */
 function classificarValor(valor: number, requisito: number): 0 | 1 | 2 {
-  if (valor >= requisito) return 2; //Alto
-  else if(valor === -1) return 1; //Baixo
-  else return 0; //Médio-Alto
+  if (valor >= requisito) return 2; //Atende requisito
+  else if(valor === -1) return 1; //Não tem requisito
+  else return 0; //Não atende
 }
 
 // Viabilidade de aventureiro
@@ -25,10 +25,6 @@ function aventureiroViavel(personagem: FichaPersonagem) {
   else return false;
 }
 
-
-/*
-
-*/
 function verificarAtributos (personagem: FichaPersonagem, classe: TermoClasse) : number {
   let calculo =  classificarValor(personagem.forca, classe.atributo[0])
   *classificarValor(personagem.destreza, classe.atributo[1])

@@ -125,7 +125,6 @@ const Carisma: TipoTermo = {
   nome: 'Carisma'
 }
 
-
 export let atributos: Array<TipoTermo> = [
   Forca, Destreza, Constituicao, Inteligencia, Sabedoria, Carisma
 ]
